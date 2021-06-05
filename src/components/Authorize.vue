@@ -29,27 +29,11 @@ export default {
   },
   methods: {
     submitForm() {
-      let data = { username: this.username, password: this.password };
-      this.$store.commit("axios_load");
-      axios({
-        method: 'post',
-        url: '/api' + window.location.pathname,
-        responseType: 'json',
-        data: data
-      })
-          .then(() => {
-              this.$store.commit('authorize');
-          })
-          .catch((error) => {
-              console.log(error);
-              if (error.response.status == 403) {
-                this.$store.commit('deauthorize');
-              }
-          }).finally(() => {
-            console.log(this.$store.state.authorized);
-            this.$store.commit("axios_unload");
-          });
-      }
+      let credentials = { username: this.username, password: this.password };
+      this.$store.commit('authorize', credentials);
+      this.username = "";
+      this.password = "";
+  }
   }
 };
 </script>

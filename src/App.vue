@@ -32,22 +32,7 @@ export default {
 
   },
   beforeCreate() {
-    this.$store.commit("axios_load");
-    axios({
-        method: 'get',
-        url: '/api' + window.location.pathname,
-        responseType: 'json'
-      })
-      .then(() => {
-          this.$store.commit('authorize');
-      })
-      .catch((error) => {
-          console.log(error);
-          this.$store.commit('deauthorize');
-      }).finally(() => {
-        console.log(this.$store.state.authorized);
-        this.$store.commit("axios_unload");
-      });
+    this.$store.commit("get_data_for_url");
   },
   data () {
     return {
