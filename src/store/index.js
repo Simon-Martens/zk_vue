@@ -15,10 +15,11 @@ export default createStore({
       state.axios_loading = true;
 
       axios({
-        method: 'get',
+        method: 'get', // TODO: prevent CSRF
         url: state.server + window.location.pathname,
         responseType: 'json',
-        withCredentials: true
+        withCredentials: true,
+        headers: {'XSRF-TOKEN': this.state.d.token},
       })
       .then((response) => {
           state.authorized = true;
@@ -48,8 +49,13 @@ export default createStore({
         data: credentials,
         withCredentials: true
       })
-          .then(() => {
+          .then((response) => {
               state.authorized = true;
+              state.d = response.data;
+              if (response.data.history) {
+                history.pushState(response.data, "", response.data.url);
+                // this.commit('get_data_for_url');
+              }
               this.commit("get_data_for_url");
           })
           .catch((error) => {
