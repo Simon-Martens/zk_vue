@@ -1,63 +1,51 @@
 <template>
-  <div class="container-sm site-container">
-    <Header title="zk" subtitle=""/>
-      <div class="spinner-mid" v-if="$store.state.axios_loading">
-        <div class="d-flex align-items-center">
-          <div class="spinner-border" role="status">
-          <span class="visually-hidden"></span>
-          </div>
-          </div>
-      </div>
-      <div v-else>
-        <Authorized v-if="$store.state.authorized"/>
-        <Authorize v-else/>
-      </div>
+  <div class="container-sm site-container" v-if="!$store.state.firstget">
+    <Header title="zk" subtitle="" />
+    <component v-bind:is="'S' + $store.state.s"></component>
   </div>
 </template>
 
 <script>
-import Authorize from './components/Authorize.vue'
-import Header from './components/Header.vue'
-import Authorized from './components/Authorized.vue'
-import axios from 'axios'
+import S401 from "./components/S401.vue";
+import Header from "./components/Header.vue";
+import S200 from "./components/S200.vue";
+import S404 from "./components/S404.vue";
+import axios from "axios";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Header,
-    Authorize,
-    Authorized
+    S200,
+    S401,
+    S404,
   },
-  data () {
-
-  },
+  data() {},
   beforeCreate() {
     this.$store.commit("get_data_for_url");
   },
-  data () {
-    return {
-    }
-  }
-}
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style lang="scss">
-@import './scss/site.scss';
+@import "./scss/site.scss";
 
-@media (min-width:768px) {
-    .site-container {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-    }
+@media (min-width: 768px) {
+  .site-container {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }
 
-@media (max-width:768px) {
-    .site-container {
-      padding-top: 0;
-      padding-bottom: 0;
-    }
+@media (max-width: 768px) {
+  .site-container {
+    padding-top: 0;
+    padding-bottom: 0;
   }
-
+}
 </style>
 
 <!--

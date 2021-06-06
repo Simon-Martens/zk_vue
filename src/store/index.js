@@ -1,74 +1,70 @@
-import { createStore } from 'vuex'
-import axios from 'axios'
-import { setTransitionHooks } from '@vue/runtime-core';
+import { createStore } from "vuex";
+import axios from "axios";
+import { setTransitionHooks } from "@vue/runtime-core";
 
 export default createStore({
   state: {
-    authorized: false,
-    server: 'http://localhost:8000/api',
+    firstget: true,
+    server: "http://localhost:8000/api",
     axios_loading: false,
-    d: {}
+    s: "401",
+    d: {},
   },
   mutations: {
-
     get_data_for_url(state) {
       state.axios_loading = true;
 
       axios({
-        method: 'get', // TODO: prevent CSRF
+        method: "get",
         url: state.server + window.location.pathname,
-        responseType: 'json',
+        responseType: "json",
         withCredentials: true,
-        headers: {'XSRF-TOKEN': this.state.d.token},
+        headers: { "XSRF-TOKEN": this.state.d.token },
       })
-      .then((response) => {
-          state.authorized = true;
-          state.d = response.data;
-          if (response.data.history) {
-            history.pushState(response.data, "", response.data.url);
-            // this.commit('get_data_for_url');
+        .then((response) => {
+          if (response.data.history && !(Object.keys(state.d).length === 0) ) {
+            history.pushState(response.data, "", "/" + response.data.url);
           }
-      })
-      .catch((error) => {
-          console.log(error);
-          state.authorized = false;
-      }).finally(() => {
-        console.log(state.authorized);
-        state.axios_loading = false;
-      });
+          state.d = response.data;
+          state.s = response.status;
+        })
+        .catch((error) => {
+          state.d = error.response.data;
+          state.s = error.response.status;
+        })
+        .finally(() => {
+          state.axios_loading = false;
+          state.firstget = false;
+        });
     },
 
-
-    authorize(state, credentials) {
+    post(state, j) {
       state.axios_loading = true;
-      console.log(credentials);
       axios({
-        method: 'post',
+        method: "post",
         url: state.server + window.location.pathname,
-        responseType: 'json',
-        data: credentials,
-        withCredentials: true
+        responseType: "json",
+        data: j,
+        headers: { "XSRF-TOKEN": this.state.d.token },
+        withCredentials: true,
       })
-          .then((response) => {
-              state.authorized = true;
-              state.d = response.data;
-              if (response.data.history) {
-                history.pushState(response.data, "", response.data.url);
-                // this.commit('get_data_for_url');
-              }
-              this.commit("get_data_for_url");
-          })
-          .catch((error) => {
-              console.log(error);
-              state.authorized = false;
-          }).finally(() => {
-              console.log(state.authorized);
-              state.axios_loading = false;
-          });
-      }
+        .then((response) => {
+          if (response.data.history && !(Object.keys(state.d).length === 0) ) {
+            history.pushState(response.data, "", response.data.url);
+          }
+          state.d = response.data;
+          state.s = response.status;
+        })
+        .catch((error) => {
+          state.s = error.response.status;
+          state.d = error.response.data;
+        })
+        .finally(() => {
+          state.axios_loading = false;
+          state.firstget = false;
+        });
+    },
   },
-  actions: {
-  },
-  modules: {
-  }
-})
+  actions: {},
+  modules: {},
+});
