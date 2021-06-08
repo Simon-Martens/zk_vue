@@ -9,6 +9,7 @@
     "watch": "npm-watch"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
     "install": "^0.13.0",

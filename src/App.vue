@@ -1,7 +1,9 @@
 <template>
   <div class="container-sm site-container" v-if="!$store.state.firstget">
     <Header title="zk" subtitle="" />
-    <component v-bind:is="'S' + $store.state.s"></component>
+    <div>
+      <component v-bind:is="'S' + $store.state.s"></component>
+    </div>
   </div>
 </template>
 
@@ -10,23 +12,53 @@ import S401 from "./components/S401.vue";
 import Header from "./components/Header.vue";
 import S200 from "./components/S200.vue";
 import S404 from "./components/S404.vue";
-import axios from "axios";
 
 export default {
   name: "App",
+
   components: {
     Header,
     S200,
     S401,
     S404,
   },
+
   data() {},
+
+  // Alternative Setup & Config
+  // setup() {},
+  // inheritAttrs: true,
+
+  // Methods:
+  computed: {},
+  methods: {},
+  props: {},
+  watch: {},
+  emits: {},
+  directives: {},
+
+  // Extending and injecting:
+  // mixins: [],
+  // extends: string,
+  // inject: [],
+  // provide: [],
+
+  // Hooks:
   beforeCreate() {
     this.$store.commit("get_data_for_url");
   },
-  data() {
-    return {};
-  },
+  // created() {},
+  // beforeMount() {},
+  // mounted() {},
+  // beforeUpdate() {},
+  // updated() {},
+  // activated() {},
+  // deactivated() {},
+  // beforeUnmount() {},
+  // unmounted() {},
+  // errorCaptured() {},
+  // renderTracked() {},
+  //renderTriggered() {}
 };
 </script>
 

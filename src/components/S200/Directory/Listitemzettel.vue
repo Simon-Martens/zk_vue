@@ -1,17 +1,15 @@
-<template>
-  MD
-</template>
+<template> </template>
 <script>
 export default {
-  name: "MD",
-
+  name: "Listitemzettel",
+  
   components: {},
 
   data() {
     return {};
   },
 
-  // Alternative Setup & Config
+  // Alternative Setup & Config:
   // setup() {},
   // inheritAttrs: true,
 
@@ -45,3 +43,4 @@ export default {
   //renderTriggered() {}
 };
 </script>
+<style scoped></style>

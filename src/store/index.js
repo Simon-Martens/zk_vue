@@ -42,11 +42,11 @@ export default createStore({
       state.axios_loading = true;
       axios({
         method: "post",
-        url: state.server + window.location.pathname,
+        url: state.server + window.location.pathname + '?' + j.method,
         responseType: "json",
-        data: j,
-        headers: { "XSRF-TOKEN": this.state.d.token },
+        data: j.body,
         withCredentials: true,
+        headers: { "XSRF-TOKEN": this.state.d.token },
       })
         .then((response) => {
           if (response.data.history && !(Object.keys(state.d).length === 0) ) {
