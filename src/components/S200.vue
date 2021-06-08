@@ -1,5 +1,4 @@
 <template>
-  Hallo
   <component v-bind:is="$store.state.d.datatype"></component>
 </template>
 <script>

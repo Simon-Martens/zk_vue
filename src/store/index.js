@@ -5,18 +5,26 @@ import { setTransitionHooks } from "@vue/runtime-core";
 export default createStore({
   state: {
     firstget: true,
-    server: "http://localhost:8000/api",
+    server: "http://localhost:8000/api/",
     axios_loading: false,
     s: "401",
     d: {},
+
+    editing: false,
+
+    last_site_data: {},
   },
   mutations: {
-    get_data_for_url(state) {
+    set_last_site_data(state, d) {
+      state.last_site_data = d;
+    },
+
+    get(state, url) {
       state.axios_loading = true;
 
       axios({
         method: "get",
-        url: state.server + window.location.pathname,
+        url: state.server + url,
         responseType: "json",
         withCredentials: true,
         headers: { "XSRF-TOKEN": this.state.d.token },

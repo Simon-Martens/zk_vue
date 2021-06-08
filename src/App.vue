@@ -23,7 +23,9 @@ export default {
     S404,
   },
 
-  data() {},
+  data() {
+    return {}
+  },
 
   // Alternative Setup & Config
   // setup() {},
@@ -31,7 +33,13 @@ export default {
 
   // Methods:
   computed: {},
-  methods: {},
+  methods: {
+    preventNav(event) {
+      if (!this.$store.state.editing) return
+      event.preventDefault()
+      event.returnValue = ""
+    }
+  },
   props: {},
   watch: {},
   emits: {},
@@ -45,20 +53,33 @@ export default {
 
   // Hooks:
   beforeCreate() {
-    this.$store.commit("get_data_for_url");
+    this.$store.commit("get", window.location.pathname);
   },
   // created() {},
-  // beforeMount() {},
+  beforeMount() {
+    window.addEventListener("beforeunload", this.preventNav);
+  },
   // mounted() {},
   // beforeUpdate() {},
   // updated() {},
   // activated() {},
   // deactivated() {},
-  // beforeUnmount() {},
+  beforeUnmount() {
+    window.removeEventListener("beforeunload", this.preventNav);
+  },
   // unmounted() {},
   // errorCaptured() {},
   // renderTracked() {},
-  //renderTriggered() {}
+  // renderTriggered() {}
+
+  directives: {
+    focus: {
+      // directive definition
+      mounted(el) {
+        el.focus()
+      }
+    }
+  }
 };
 </script>
 

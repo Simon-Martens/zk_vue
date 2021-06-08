@@ -5,4 +5,5 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 
-createApp(App).use(store).use(VueAxios, axios).mount('#app')
+var h = createApp(App).use(store).use(VueAxios, axios);
+h.mount('#app');
