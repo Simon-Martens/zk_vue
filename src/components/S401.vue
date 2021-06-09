@@ -28,7 +28,7 @@
   </form>
 </template>
 <script>
-import axios from "axios";
+import { mapActions } from 'vuex';
 
 export default {
   name: "S401",
@@ -52,10 +52,15 @@ export default {
     submitForm() {
       let c = { username: this.username, password: this.password };
       let m = "auth";
-      this.$store.commit("post", { body: c, method: m });
+      this.post({ body: c, method: m });
       this.username = "";
       this.password = "";
     },
+
+    ...mapActions([
+      'post',
+      'get'
+    ]),
   },
   props: {},
   watch: {},

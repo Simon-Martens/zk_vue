@@ -1,17 +1,14 @@
 <template>
-  <component v-bind:is="view"></component>
+    <div v-html="compiledmd"></div>
 </template>
 <script>
-import Directory from "./S200/Directory.vue";
-import MD from "./S200/MD.vue";
+import DOMPurify from 'dompurify';
+import marked from 'marked';
 
 export default {
-  name: "S200",
-  
-  components: {
-    Directory,
-    MD,
-  },
+  name: "MDRender",
+
+  components: {},
 
   data() {
     return {};
@@ -23,12 +20,12 @@ export default {
 
   // Methods:
   computed: {
-    view: function() {
-      return this.$store.state.d.datatype;
+    compiledmd: function() {
+      return marked(this.md, { sanitize: true });
     }
   },
   methods: {},
-  props: {},
+  props: ['md'],
   watch: {},
   emits: {},
   directives: {},
@@ -55,3 +52,6 @@ export default {
   //renderTriggered() {}
 };
 </script>
+<style scoped>
+
+</style>

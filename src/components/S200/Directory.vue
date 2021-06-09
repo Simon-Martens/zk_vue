@@ -1,19 +1,16 @@
 <template>
   <div class="directoryview">
     <Commandbar />
-    <Listview />
   </div>
 </template>
 <script>
 import Commandbar from "./Directory/Commandbar.vue";
-import Listview from "./Directory/Listview.vue";
 
 export default {
   name: "Directory",
 
   components: {
     Commandbar,
-    Listview,
   },
 
   data() {

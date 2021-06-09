@@ -1,8 +1,8 @@
 <template>
-  <div class="container-sm site-container" v-if="!$store.state.firstget">
+  <div class="container-sm site-container" v-if="!firstget">
     <Header title="zk" subtitle="" />
     <div>
-      <component v-bind:is="'S' + $store.state.s"></component>
+      <component v-bind:is="scode"></component>
     </div>
   </div>
 </template>
@@ -12,6 +12,7 @@ import S401 from "./components/S401.vue";
 import Header from "./components/Header.vue";
 import S200 from "./components/S200.vue";
 import S404 from "./components/S404.vue";
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: "App",
@@ -32,13 +33,22 @@ export default {
   // inheritAttrs: true,
 
   // Methods:
-  computed: {},
+  computed: {
+    scode: function() {
+      return 'S' + this.s;
+    },
+    ...mapState(['firstget', 's']),
+  },
   methods: {
-    preventNav(event) {
+    preventNav: function(event) {  // TODO This does not work
       if (!this.$store.state.editing) return
-      event.preventDefault()
+      confirm("By reloading this you might lose some changes.")
       event.returnValue = ""
-    }
+    },
+    ...mapActions([
+      'post',
+      'get'
+    ]),
   },
   props: {},
   watch: {},
@@ -52,14 +62,18 @@ export default {
   // provide: [],
 
   // Hooks:
-  beforeCreate() {
-    this.$store.commit("get", window.location.pathname);
-  },
+  // beforeCreate() { },
   // created() {},
-  beforeMount() {
+  // beforeMount() {},
+  mounted() {
+    this.get(window.location.pathname);
     window.addEventListener("beforeunload", this.preventNav);
+    window.addEventListener('popstate', (event) => {
+      this.$store.commit("set_d", event.state);
+      this.$store.commit("set_s", 200);
+      this.$store.commit('calculate_data_from_response');
+    });
   },
-  // mounted() {},
   // beforeUpdate() {},
   // updated() {},
   // activated() {},
@@ -71,15 +85,6 @@ export default {
   // errorCaptured() {},
   // renderTracked() {},
   // renderTriggered() {}
-
-  directives: {
-    focus: {
-      // directive definition
-      mounted(el) {
-        el.focus()
-      }
-    }
-  }
 };
 </script>
 

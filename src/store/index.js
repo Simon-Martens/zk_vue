@@ -15,12 +15,34 @@ export default createStore({
     last_site_data: {},
   },
   mutations: {
+    set_d(state, d) {
+      state.d = d;
+    },
+
+    set_s(state, s) {
+      state.s = s;
+    },
+
+    set_axios_loading(state, b) {
+      state.axios_loading = b;
+    },
+
     set_last_site_data(state, d) {
       state.last_site_data = d;
     },
 
-    get(state, url) {
-      state.axios_loading = true;
+    on_first_get(state) {
+      state.firstget = false;
+    },
+
+    calculate_data_from_response() { 
+
+    },
+    
+  },
+  actions: {
+    get: function({ state, commit }, url) {
+      commit('set_axios_loading', true);
 
       axios({
         method: "get",
@@ -30,24 +52,31 @@ export default createStore({
         headers: { "XSRF-TOKEN": this.state.d.token },
       })
         .then((response) => {
-          if (response.data.history && !(Object.keys(state.d).length === 0) ) {
+          if (response.data.history && !(Object.keys(state.d).length === 0)) {
             history.pushState(response.data, "", "/" + response.data.url);
           }
-          state.d = response.data;
-          state.s = response.status;
+          commit('set_d', response.data);
+          commit('set_s', response.status);
+          commit('calculate_data_from_response');
         })
         .catch((error) => {
-          state.d = error.response.data;
-          state.s = error.response.status;
+          if (!(Object.keys(error.response.data).length === 0)) {
+            commit('set_d', error.response.data);
+            commit('set_s', error.response.status);
+          }
+          else {
+            console.log(error);
+          }
         })
         .finally(() => {
-          state.axios_loading = false;
-          state.firstget = false;
+          commit('set_axios_loading', false);
+          commit("on_first_get");
         });
     },
 
-    post(state, j) {
-      state.axios_loading = true;
+    post: function({state, commit}, j) {
+      commit('set_axios_loading', true);
+
       axios({
         method: "post",
         url: state.server + window.location.pathname + '?' + j.method,
@@ -57,22 +86,28 @@ export default createStore({
         headers: { "XSRF-TOKEN": this.state.d.token },
       })
         .then((response) => {
-          if (response.data.history && !(Object.keys(state.d).length === 0) ) {
+          if (response.data.history && !(Object.keys(state.d).length === 0)) {
             history.pushState(response.data, "", response.data.url);
           }
-          state.d = response.data;
-          state.s = response.status;
+          commit('set_d', response.data);
+          commit('set_s', response.status);
+          commit('calculate_data_from_response');
         })
         .catch((error) => {
-          state.s = error.response.status;
-          state.d = error.response.data;
+          if (!(Object.keys(error.response.data).length === 0)) {
+            commit('set_d', error.response.data);
+            commit('set_s', error.response.status);
+          }
+          else {
+            console.log(error);
+          }
         })
         .finally(() => {
-          state.axios_loading = false;
-          state.firstget = false;
+          commit('set_axios_loading', false);
+          commit("on_first_get");
         });
     },
+
   },
-  actions: {},
   modules: {},
 });

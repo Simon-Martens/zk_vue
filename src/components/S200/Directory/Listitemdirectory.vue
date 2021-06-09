@@ -1,4 +1,12 @@
-<template> </template>
+<template>
+<a :href="dir.url" v-on:click.prevent="link(dir.url)">
+<div class="directory row no-gutters">
+  <div class="col-4">
+    {{ dir.name }}
+    </div>
+  </div>
+</a>
+</template>
 <script>
 export default {
   name: "Listitemdirectory",
@@ -16,7 +24,9 @@ export default {
   // Methods:
   computed: {},
   methods: {},
-  props: {},
+  props: [
+    'dir'
+  ],
   watch: {},
   emits: {},
   directives: {},
@@ -43,4 +53,5 @@ export default {
   //renderTriggered() {}
 };
 </script>
-<style scoped></style>
+<style scoped>
+</style>
