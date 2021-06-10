@@ -1,8 +1,13 @@
 <template>
   <div class="row no-gutters site-search-bar">
-    <div class="col-7">
+    <div class="col-7 site-search-bar-front">
       <div class="row no-gutters site-search-bar-icon-message">
-        <div class="col-auto site-search-bar-icon">〉</div>
+        <div class="col-auto site-search-bar-icon">
+          <div class="site-foldername" v-if="!isRoot">
+             {{ d.url }}
+          </div>
+          〉
+          </div>
         <div class="col site-search-bar-inputform">
           <form
             class="site-search-form"
@@ -23,8 +28,8 @@
         </div>
       </div>
     </div>
-    <div class="col-5 site-search-bar-message">
-      <MDRender :md="message"/>
+    <div class="col-5 site-search-bar-back">
+          <MDRender class="mdtext no-p" :md="message"/>
     </div>
   </div>
   <Listview :inner="d.inner"/>
@@ -66,6 +71,10 @@ export default {
 
   // Methods:
   computed: {
+    isRoot: function() {
+      if (this.d.url === "./") return true;
+      return false;
+    },
     ...mapState([
       'd',
     ])
@@ -136,6 +145,7 @@ export default {
   margin-bottom: 0.3rem;
   background-color: cornsilk;
   border-radius: 7px;
+  line-height: 1rem;
 }
 
 .site-search-bar-icon {
@@ -149,14 +159,20 @@ export default {
   background-color: transparent;
 }
 
-.site-search-bar-message {
+.site-search-bar-back {
   border-left: 4px solid white;
   padding-left: 0.5rem !important;
+  padding-top: 3px;
 }
 
 .site-search-bar-icon-message {
   border-radius: 7px;
   background-color: rgb(252, 244, 180);
+}
+
+.site-search-bar-front {
+  background-color: rgb(252, 244, 180);
+  padding-top: 3px;
 }
 
 form.site-search-form {
@@ -172,5 +188,12 @@ form.site-search-form input.site-search-input {
   width: 100%;
   -webkit-appearance: none;
   outline: none;
+}
+
+.site-foldername {
+  display: inline-block;
+  font-weight: normal;
+  font-size: 0.8rem;
+  padding-right: 0.4rem;
 }
 </style>

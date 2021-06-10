@@ -45,3 +45,24 @@
     width: 1rem !important;
     height: 1rem !important;
 }
+
+.no-p p {
+    margin-bottom: 0 !important;
+}
+
+.list > div:nth-of-type(odd) {
+    background-color: rgb(242, 243, 242);
+  }
+
+.list .listitem:hover {
+    background-color: lavender;
+    font-weight: bolder;
+}
+
+.list .listitem {
+    padding-left: 0.3rem;
+}
+
+.list .listitem a {
+    color: black;
+}

@@ -1,4 +1,5 @@
 <template>
+<div class="listitem">
 <a :href="dir.url" v-on:click.prevent="link(dir.url)">
 <div class="directory row no-gutters">
   <div class="col-4">
@@ -6,6 +7,7 @@
     </div>
   </div>
 </a>
+</div>
 </template>
 <script>
 export default {

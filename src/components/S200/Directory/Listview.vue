@@ -1,15 +1,21 @@
 <template>
-<Listitemdirectory v-for="dir in dirs" :dir="dir" :key="dir.name"></Listitemdirectory>
+  <div class="list">
+      <Listitemdirectory
+        v-for="dir in dirs"
+        :dir="dir"
+        :key="dir.name"
+      ></Listitemdirectory>
+  </div>
 </template>
 <script>
-import Listitemdirectory from './Listitemdirectory.vue';
-import { mapActions, mapState } from 'vuex';
+import Listitemdirectory from "./Listitemdirectory.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Listview",
-  
+
   components: {
-    Listitemdirectory
+    Listitemdirectory,
   },
 
   data() {
@@ -24,12 +30,10 @@ export default {
   computed: {
     dirs: function() {
       return this.inner.dirs;
-    }
+    },
   },
   methods: {},
-  props: [
-    'inner'
-  ],
+  props: ["inner"],
   watch: {},
   emits: {},
   directives: {},
@@ -56,4 +60,6 @@ export default {
   //renderTriggered() {}
 };
 </script>
-<style scoped></style>
+<style>
+
+</style>
